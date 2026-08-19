@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PokemonQuizManager : MonoBehaviour
@@ -30,6 +31,7 @@ public class PokemonQuizManager : MonoBehaviour
 
     public void CreateChoices(PokemonAPI.PokemonQuizData quizData)
     {
+        _currentQuizData = quizData;
         List<string> choices = new List<string>();
 
         //正解タイプを入れる
@@ -64,5 +66,25 @@ public class PokemonQuizManager : MonoBehaviour
         }
     }
 
-   
+    public void CheckAnswer()
+    {
+        string[] selectedTypes = _quizUI.GetSelectedTypes();
+        // 正解タイプと数が違えば不正解
+        if (selectedTypes.Length != _currentQuizData.types.Length)
+        {
+            Debug.Log("不正解");
+            return;
+        }
+
+        // 選択したタイプが全部正解タイプに含まれているか確認
+        for (int i = 0; i < selectedTypes.Length; i++)
+        {
+            if (!_currentQuizData.types.Contains(selectedTypes[i]))
+            {
+                Debug.Log("不正解");
+                return;
+            }
+        }
+        Debug.Log("正解！");
+    }
 }
