@@ -10,8 +10,17 @@ using static UnityEngine.Audio.ProcessorInstance;
 public class PokemonAPI : MonoBehaviour
 {
     [SerializeField] private Image _pokemonImage;
+    [SerializeField] private PokemonQuizManager _quizManager;
     //API
-    string urlAPI = "https://pokeapi.co/api/v2/pokemon/225";
+    string urlAPI = "https://pokeapi.co/api/v2/pokemon/3";
+
+    [Serializable]
+    public class PokemonQuizData
+    {
+        public string name;
+        public string imageURL;
+        public string[] types;
+    }
 
     [Serializable]
     public class ResponseData
@@ -56,8 +65,25 @@ public class PokemonAPI : MonoBehaviour
                 Debug.Log("リクエスト成功");
                 Debug.Log(request.downloadHandler.text);
                 ResponseData responseData = JsonUtility.FromJson<ResponseData>(request.downloadHandler.text);
-                Debug.Log(" ポケモン名" + responseData.name);
-                StartCoroutine(GetTexture(responseData.sprites.front_default));
+                //APIデータ　→　クイズ用データーに変換
+                PokemonQuizData quizData = new PokemonQuizData();
+                quizData.name = responseData.name;
+                quizData.imageURL = responseData.sprites.front_default;
+                quizData.types = new string[responseData.types.Length];
+                for(int i = 0; i < responseData.types.Length; i++)
+                {
+                    quizData.types[i] = responseData.types[i].type.name;
+                }
+                //確認
+                Debug.Log("名前：" + quizData.name);
+                for (int i = 0; i < quizData.types.Length; i++)
+                {
+                    Debug.Log("タイプ：" + quizData.types[i]);
+                }
+                //4択を作る
+                _quizManager.CreateChoices(quizData);
+                //画像所得
+                StartCoroutine(GetTexture(quizData.imageURL));
                 break;
 
             default:
