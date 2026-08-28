@@ -9,8 +9,31 @@ public class PokemonQuizUI : MonoBehaviour
 {
     [SerializeField] private Button[] _choiceButtons;
     private bool[] _selected;
+    private string[] _choiceTypes;
 
-    private void Start()
+    private Dictionary<string,string> _typeJapanese = new Dictionary<string,string>()
+    {
+        { "normal", "ノーマル" },
+        { "fire", "ほのお" },
+        { "water", "みず" },
+        { "electric", "でんき" },
+        { "grass", "くさ" },
+        { "ice", "こおり" },
+        { "fighting", "かくとう" },
+        { "poison", "どく" },
+        { "ground", "じめん" },
+        { "flying", "ひこう" },
+        { "psychic", "エスパー" },
+        { "bug", "むし" },
+        { "rock", "いわ" },
+        { "ghost", "ゴースト" },
+        { "dragon", "ドラゴン" },
+        { "dark", "あく" },
+        { "steel", "はがね" },
+        { "fairy", "フェアリー" }
+    };
+
+private void Start()
     {
         _selected = new bool[4];
     }
@@ -18,10 +41,12 @@ public class PokemonQuizUI : MonoBehaviour
 
     public void SetChoice(string[] choice)
     {
-        for(int i = 0; i < choice.Length; i++)
+        _choiceTypes = choice;
+
+        for (int i = 0; i < choice.Length; i++)
         {
             TMP_Text text = _choiceButtons[i].GetComponentInChildren<TMP_Text>();
-            text.text = choice[i];
+            text.text = _typeJapanese[choice[i]];
             _choiceButtons[i].gameObject.SetActive(true);
             _selected[i] = false;
             _choiceButtons[i].image.color = Color.white;
@@ -53,10 +78,7 @@ public class PokemonQuizUI : MonoBehaviour
         {
             if (_selected[i])
             {
-                TMP_Text text =
-                    _choiceButtons[i].GetComponentInChildren<TMP_Text>();
-
-                selectedTypes.Add(text.text);
+                selectedTypes.Add(_choiceTypes[i]);
             }
         }
 

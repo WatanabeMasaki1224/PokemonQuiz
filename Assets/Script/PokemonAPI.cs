@@ -11,8 +11,6 @@ public class PokemonAPI : MonoBehaviour
 {
     [SerializeField] private Image _pokemonImage;
     [SerializeField] private PokemonQuizManager _quizManager;
-    //API
-    string urlAPI = "https://pokeapi.co/api/v2/pokemon/3";
 
     [Serializable]
     public class PokemonQuizData
@@ -56,6 +54,9 @@ public class PokemonAPI : MonoBehaviour
 
     IEnumerator GetAPI()
     {
+        int randomID = UnityEngine.Random.Range(1, 1026);
+        //API
+        string urlAPI = "https://pokeapi.co/api/v2/pokemon/" + randomID;
         UnityWebRequest request  = UnityWebRequest.Get(urlAPI);
         yield return request.SendWebRequest();
 

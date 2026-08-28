@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,7 +6,10 @@ using UnityEngine;
 public class PokemonQuizManager : MonoBehaviour
 {
     [SerializeField] private PokemonQuizUI _quizUI;
+    [SerializeField] private GameObject _correctPanel;
+    [SerializeField] private GameObject _incorrectPanel;
     private PokemonAPI.PokemonQuizData _currentQuizData;
+    [SerializeField] private PokemonAPI _pokemonAPI;
 
     private string[] allType =
     {
@@ -49,6 +53,7 @@ public class PokemonQuizManager : MonoBehaviour
                 choices.Add(randoumType);
             }
         }
+
         //４択をシャッフルする
         for(int i = 0;i < choices.Count;i++)
         {
@@ -72,7 +77,8 @@ public class PokemonQuizManager : MonoBehaviour
         // 正解タイプと数が違えば不正解
         if (selectedTypes.Length != _currentQuizData.types.Length)
         {
-            Debug.Log("不正解");
+            ShowIncorrect();
+            Debug.Log("ふ正解");
             return;
         }
 
@@ -81,10 +87,29 @@ public class PokemonQuizManager : MonoBehaviour
         {
             if (!_currentQuizData.types.Contains(selectedTypes[i]))
             {
-                Debug.Log("不正解");
+                ShowIncorrect() ;
+                Debug.Log("ふ正解");
                 return;
             }
         }
-        Debug.Log("正解！");
+        ShowCorrect();
+        Debug.Log("正解");
+    }
+    
+    public void ShowCorrect()
+    {
+        _correctPanel.SetActive(true);
+    }
+
+    public void ShowIncorrect()
+    {
+        _incorrectPanel.SetActive(true);
+    }
+
+    public void  NextQuestion()
+    {
+        _correctPanel.SetActive(false);
+        _incorrectPanel.SetActive(false );
+        _pokemonAPI.OnClickGetPokemon();
     }
 }
