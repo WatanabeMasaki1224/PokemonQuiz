@@ -9,6 +9,7 @@ public class PokemonQuizManager : MonoBehaviour
     [SerializeField] private GameObject _correctPanel;
     [SerializeField] private GameObject _incorrectPanel;
     private PokemonAPI.PokemonQuizData _currentQuizData;
+    [SerializeField] private ScoreManager _scoreManager;
     [SerializeField] private PokemonAPI _pokemonAPI;
 
     private string[] allType =
@@ -99,6 +100,7 @@ public class PokemonQuizManager : MonoBehaviour
     public void ShowCorrect()
     {
         _correctPanel.SetActive(true);
+        _scoreManager.AddScore();
     }
 
     public void ShowIncorrect()
