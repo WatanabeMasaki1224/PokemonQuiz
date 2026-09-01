@@ -11,6 +11,7 @@ public class PokemonQuizManager : MonoBehaviour
     private PokemonAPI.PokemonQuizData _currentQuizData;
     [SerializeField] private ScoreManager _scoreManager;
     [SerializeField] private PokemonAPI _pokemonAPI;
+    [SerializeField] private TMPro.TMP_Text _scoreText;
 
     private string[] allType =
     {
@@ -106,6 +107,7 @@ public class PokemonQuizManager : MonoBehaviour
     public void ShowIncorrect()
     {
         _incorrectPanel.SetActive(true);
+        _scoreText.text = "スコア：" + _scoreManager.GetScore();
     }
 
     public void  NextQuestion()

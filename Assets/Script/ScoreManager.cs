@@ -28,4 +28,9 @@ public class ScoreManager : MonoBehaviour
     {
         _scoreText.text = "スコア：" + _score;
     }
+
+    public int GetScore()
+    {
+        return _score;
+    }
 }
