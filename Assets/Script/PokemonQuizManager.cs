@@ -35,6 +35,10 @@ public class PokemonQuizManager : MonoBehaviour
         "fairy"
     };
 
+    /// <summary>
+    /// 4択の選択肢生成
+    /// </summary>
+    /// <param name="quizData"></param>
     public void CreateChoices(PokemonAPI.PokemonQuizData quizData)
     {
         _currentQuizData = quizData;
@@ -73,6 +77,9 @@ public class PokemonQuizManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 選択した答えが正解か判定
+    /// </summary>
     public void CheckAnswer()
     {
         string[] selectedTypes = _quizUI.GetSelectedTypes();
@@ -98,18 +105,27 @@ public class PokemonQuizManager : MonoBehaviour
         Debug.Log("正解");
     }
     
+    /// <summary>
+    /// 正解時
+    /// </summary>
     public void ShowCorrect()
     {
         _correctPanel.SetActive(true);
         _scoreManager.AddScore();
     }
 
+    /// <summary>
+    /// 不正解時
+    /// </summary>
     public void ShowIncorrect()
     {
         _incorrectPanel.SetActive(true);
         _scoreText.text = "スコア：" + _scoreManager.GetScore();
     }
 
+    /// <summary>
+    /// 次の問題に進む
+    /// </summary>
     public void  NextQuestion()
     {
         _correctPanel.SetActive(false);

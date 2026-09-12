@@ -12,6 +12,9 @@ public class PokemonAPI : MonoBehaviour
     [SerializeField] private Image _pokemonImage;
     [SerializeField] private PokemonQuizManager _quizManager;
 
+    /// <summary>
+    /// APIから所得したデータを、使いやすい形にしたデータ
+    /// </summary>
     [Serializable]
     public class PokemonQuizData
     {
@@ -20,6 +23,9 @@ public class PokemonAPI : MonoBehaviour
         public string[] types;
     }
 
+    /// <summary>
+    /// PokeAPIから受け取ったJSONを一時的に受け取るためのクラス
+    /// </summary>
     [Serializable]
     public class ResponseData
     {
@@ -28,18 +34,27 @@ public class PokemonAPI : MonoBehaviour
         public TypeData[] types;
     }
 
+    /// <summary>
+    /// 画像の所得
+    /// </summary>
     [Serializable]
     public class Sprites
     {
         public string front_default;
     }
 
+    /// <summary>
+    /// タイプ情報を受け取る
+    /// </summary>
     [Serializable]
     public class TypeData
     {
         public TypeInfo type;
     }
 
+    /// <summary>
+    /// タイプの名前を受け取る
+    /// </summary>
     [Serializable]
     public class TypeInfo
     {
@@ -52,6 +67,10 @@ public class PokemonAPI : MonoBehaviour
         StartCoroutine(GetAPI());
     }
 
+    /// <summary>
+    ///　APIからデータ所得
+    /// </summary>
+    /// <returns></returns>
     IEnumerator GetAPI()
     {
         int randomID = UnityEngine.Random.Range(1, 1026);
@@ -75,7 +94,6 @@ public class PokemonAPI : MonoBehaviour
                 {
                     quizData.types[i] = responseData.types[i].type.name;
                 }
-                //確認
                 Debug.Log("名前：" + quizData.name);
                 for (int i = 0; i < quizData.types.Length; i++)
                 {
@@ -94,6 +112,11 @@ public class PokemonAPI : MonoBehaviour
         request.Dispose();
     }
 
+    /// <summary>
+    /// 画像を所得
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     IEnumerator GetTexture(string url)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
@@ -101,7 +124,9 @@ public class PokemonAPI : MonoBehaviour
 
         if(request.result == UnityWebRequest.Result.Success)
         {
+            //ダウンロードした画像を Texture2Dで保存
             Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            //spriteに変換してimageに表示
             _pokemonImage.sprite =
                 Sprite.Create(
                     texture,

@@ -38,24 +38,35 @@ private void Start()
         _selected = new bool[4];
     }
 
-
+    /// <summary>
+    /// クイズの４択ボタンに選択肢を表示
+    /// </summary>
+    /// <param name="choice"></param>
     public void SetChoice(string[] choice)
     {
+        //答え合わせで使うため英語も保存しておく
         _choiceTypes = choice;
 
         for (int i = 0; i < choice.Length; i++)
         {
             TMP_Text text = _choiceButtons[i].GetComponentInChildren<TMP_Text>();
+            // 英語のタイプ名を日本語に変換して表示
             text.text = _typeJapanese[choice[i]];
             _choiceButtons[i].gameObject.SetActive(true);
+            // 新しい問題なので、選択状態を解除する
             _selected[i] = false;
             _choiceButtons[i].image.color = Color.white;
             int index = i;
+            // 前の問題で登録したクリック処理を削除する
             _choiceButtons[i].onClick.RemoveAllListeners();
             _choiceButtons[i].onClick.AddListener(() => SelectChoise(index));
         }
     }
 
+    /// <summary>
+    /// 選択肢を押したときの処理
+    /// </summary>
+    /// <param name="index"></param>
     void SelectChoise(int index)
     {
         _selected[index] = !_selected[index];
@@ -70,6 +81,10 @@ private void Start()
         }
     }
 
+    /// <summary>
+    /// 選択したタイプを受け取る
+    /// </summary>
+    /// <returns></returns>
     public string[] GetSelectedTypes()
     {
         List<string> selectedTypes = new List<string>();
